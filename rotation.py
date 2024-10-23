@@ -1,84 +1,94 @@
 #!/bin/python3
 
 
-def computeRing(rows: int, cols: int, r: int, c: int) -> int:
-    return min(r, c, rows - 1 - r, cols - 1 - c)
+def computeRing(rows_count: int, cols_count: int, row: int, col: int) -> int:
+    return min(row, col, rows_count - 1 - row, cols_count - 1 - col)
 
 
-def goLeft(rotation: int, c: int, ring: int) -> tuple[int, int]:
-    shift = min(rotation, c - ring)
-    c -= shift
+def goLeft(rotation: int, col: int, ring: int) -> tuple[int, int]:
+    shift = min(rotation, col - ring)
+    col -= shift
     rotation -= shift
-    return c, rotation
+    return col, rotation
 
 
-def goRight(rotation: int, c: int, cols: int, ring: int) -> tuple[int, int]:
-    shift = min(rotation, cols - 1 - ring - c)
-    c += shift
+def goRight(rotation: int, col: int, cols_count: int, ring: int) -> tuple[int, int]:
+    shift = min(rotation, cols_count - 1 - ring - col)
+    col += shift
     rotation -= shift
-    return c, rotation
+    return col, rotation
 
 
-def goUp(rotation: int, r: int, ring: int) -> tuple[int, int]:
-    shift = min(rotation, r - ring)
-    r -= shift
+def goUp(rotation: int, row: int, ring: int) -> tuple[int, int]:
+    shift = min(rotation, row - ring)
+    row -= shift
     rotation -= shift
-    return r, rotation
+    return row, rotation
 
 
-def goDown(rotation: int, r: int, rows: int, ring: int) -> tuple[int, int]:
-    shift = min(rotation, rows - 1 - ring - r)
-    r += shift
+def goDown(rotation: int, row: int, rows_count: int, ring: int) -> tuple[int, int]:
+    shift = min(rotation, rows_count - 1 - ring - row)
+    row += shift
     rotation -= shift
-    return r, rotation
+    return row, rotation
 
 
 def computeOldPosition(
-    rows: int, cols: int, rotation: int, r: int, c: int
+    rows_count: int, cols_count: int, rotation: int, row: int, col: int
 ) -> tuple[int, int]:
-    ring = computeRing(rows, cols, r, c)
+    ring = computeRing(rows_count, cols_count, row, col)
     while rotation > 0:
-        if r == ring:
-            if c == cols - 1 - ring:
-                r, rotation = goDown(rotation=rotation, r=r, rows=rows, ring=ring)
+        if row == ring:
+            if col == cols_count - 1 - ring:
+                row, rotation = goDown(
+                    rotation=rotation, row=row, rows_count=rows_count, ring=ring
+                )
             else:
-                c, rotation = goRight(rotation=rotation, c=c, cols=cols, ring=ring)
-        elif r == rows - 1 - ring:
-            if c == ring:
-                r, rotation = goUp(rotation=rotation, r=r, ring=ring)
+                col, rotation = goRight(
+                    rotation=rotation, col=col, cols_count=cols_count, ring=ring
+                )
+        elif row == rows_count - 1 - ring:
+            if col == ring:
+                row, rotation = goUp(rotation=rotation, row=row, ring=ring)
             else:
-                c, rotation = goLeft(rotation=rotation, c=c, ring=ring)
-        elif c == ring:
-            r, rotation = goUp(rotation=rotation, r=r, ring=ring)
-        elif c == cols - 1 - ring:
-            r, rotation = goDown(rotation=rotation, r=r, rows=rows, ring=ring)
+                col, rotation = goLeft(rotation=rotation, col=col, ring=ring)
+        elif col == ring:
+            row, rotation = goUp(rotation=rotation, row=row, ring=ring)
+        elif col == cols_count - 1 - ring:
+            row, rotation = goDown(
+                rotation=rotation, row=row, rows_count=rows_count, ring=ring
+            )
         else:
-            raise ValueError(f"Unexpected coords for {ring=}: {r=}, {c=}")
+            raise ValueError(f"Unexpected coords for {ring=}: {row=}, {col=}")
 
     assert rotation == 0, rotation
-    return r, c
+    return row, col
 
 
 def matrixRotation(matrix: list[int], rotation: int):
     if not matrix:
         return
 
-    rows = len(matrix)
-    if not rows:
+    rows_count = len(matrix)
+    if not rows_count:
         return
 
-    cols = len(matrix[0])
-    if not cols:
+    cols_count = len(matrix[0])
+    if not cols_count:
         return
 
-    def get_new_value(r: int, c: int) -> int:
-        old_r, old_c = computeOldPosition(
-            rows=rows, cols=cols, rotation=rotation, r=r, c=c
+    def get_new_value(row: int, col: int) -> int:
+        old_row, old_col = computeOldPosition(
+            rows_count=rows_count,
+            cols_count=cols_count,
+            rotation=rotation,
+            row=row,
+            col=col,
         )
-        return matrix[old_r][old_c]
+        return matrix[old_row][old_col]
 
-    for r in range(rows):
-        print(" ".join(str(get_new_value(r, c)) for c in range(cols)))
+    for row in range(rows_count):
+        print(" ".join(str(get_new_value(row, col)) for col in range(cols_count)))
 
 
 if __name__ == "__main__":
