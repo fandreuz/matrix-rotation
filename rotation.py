@@ -5,6 +5,10 @@ def computeRing(rows_count: int, cols_count: int, row: int, col: int) -> int:
     return min(row, col, rows_count - 1 - row, cols_count - 1 - col)
 
 
+def computeRingSize(rows_count: int, cols_count: int, ring: int) -> int:
+    return (rows_count - 2 * ring) * 2 + (cols_count - 2 * ring - 2) * 2
+
+
 def goLeft(rotation: int, col: int, ring: int) -> tuple[int, int]:
     shift = min(rotation, col - ring)
     col -= shift
@@ -37,6 +41,8 @@ def computeOldPosition(
     rows_count: int, cols_count: int, rotation: int, row: int, col: int
 ) -> tuple[int, int]:
     ring = computeRing(rows_count, cols_count, row, col)
+    ring_size = computeRingSize(rows_count, cols_count, ring)
+    rotation = rotation % ring_size
     while rotation > 0:
         if row == ring:
             if col == cols_count - 1 - ring:
