@@ -61,7 +61,7 @@ def computeOldPosition(
 ) -> tuple[int, int]:
     """
     Compute the old position of the given `row`/`col` pair before an
-    anti-clockwise rotation. This is achieved by rotation clockwise the pair.
+    anti-clockwise rotation. This is achieved by rotating clockwise the pair.
     """
     ring = computeRing(rows_count, cols_count, row, col)
     ring_size = computeRingSize(rows_count, cols_count, ring)
