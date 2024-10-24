@@ -3,7 +3,7 @@
 from typing import Callable
 
 
-def computeRing(rows_count: int, cols_count: int, row: int, col: int) -> int:
+def compute_ring(rows_count: int, cols_count: int, row: int, col: int) -> int:
     """
     Compute the matrix ring (i.e. distance from the border) of the given
     `row`/`col` pair.
@@ -11,7 +11,7 @@ def computeRing(rows_count: int, cols_count: int, row: int, col: int) -> int:
     return min(row, col, rows_count - 1 - row, cols_count - 1 - col)
 
 
-def computeRingSize(rows_count: int, cols_count: int, ring: int) -> int:
+def compute_ring_size(rows_count: int, cols_count: int, ring: int) -> int:
     """
     Compute the size of the given ring in terms of matrix cells.
     """
@@ -22,7 +22,7 @@ def computeRingSize(rows_count: int, cols_count: int, ring: int) -> int:
     return (rows_count - 2 * ring) * 2 + (cols_count - 2 * ring - 2) * 2
 
 
-def goLeft(rotation: int, col: int, ring: int) -> tuple[int, int]:
+def go_left(rotation: int, col: int, ring: int) -> tuple[int, int]:
     """
     Update `col` and `rotation` after going left as much as possible.
     """
@@ -32,7 +32,7 @@ def goLeft(rotation: int, col: int, ring: int) -> tuple[int, int]:
     return col, rotation
 
 
-def goRight(rotation: int, col: int, cols_count: int, ring: int) -> tuple[int, int]:
+def go_right(rotation: int, col: int, cols_count: int, ring: int) -> tuple[int, int]:
     """
     Update `col` and `rotation` after going right as much as possible.
     """
@@ -42,7 +42,7 @@ def goRight(rotation: int, col: int, cols_count: int, ring: int) -> tuple[int, i
     return col, rotation
 
 
-def goUp(rotation: int, row: int, ring: int) -> tuple[int, int]:
+def go_up(rotation: int, row: int, ring: int) -> tuple[int, int]:
     """
     Update `row` and `rotation` after going up as much as possible.
     """
@@ -52,7 +52,7 @@ def goUp(rotation: int, row: int, ring: int) -> tuple[int, int]:
     return row, rotation
 
 
-def goDown(rotation: int, row: int, rows_count: int, ring: int) -> tuple[int, int]:
+def go_down(rotation: int, row: int, rows_count: int, ring: int) -> tuple[int, int]:
     """
     Update `row` and `rotation` after going down as much as possible.
     """
@@ -62,15 +62,15 @@ def goDown(rotation: int, row: int, rows_count: int, ring: int) -> tuple[int, in
     return row, rotation
 
 
-def computeOldPosition(
+def compute_old_position(
     rows_count: int, cols_count: int, rotation: int, row: int, col: int
 ) -> tuple[int, int]:
     """
     Compute the old position of the given `row`/`col` pair before an
     anti-clockwise rotation. This is achieved by rotating clockwise the pair.
     """
-    ring = computeRing(rows_count, cols_count, row, col)
-    ring_size = computeRingSize(rows_count, cols_count, ring)
+    ring = compute_ring(rows_count, cols_count, row, col)
+    ring_size = compute_ring_size(rows_count, cols_count, ring)
     # A rotation which is an exact multiple of ring_size has no effect on the
     # matrix
     rotation = rotation % ring_size
@@ -82,22 +82,22 @@ def computeOldPosition(
     while rotation > 0:
         if row == ring:
             if col == cols_count - 1 - ring:
-                row, rotation = goDown(
+                row, rotation = go_down(
                     rotation=rotation, row=row, rows_count=rows_count, ring=ring
                 )
             else:
-                col, rotation = goRight(
+                col, rotation = go_right(
                     rotation=rotation, col=col, cols_count=cols_count, ring=ring
                 )
         elif row == rows_count - 1 - ring:
             if col == ring:
-                row, rotation = goUp(rotation=rotation, row=row, ring=ring)
+                row, rotation = go_up(rotation=rotation, row=row, ring=ring)
             else:
-                col, rotation = goLeft(rotation=rotation, col=col, ring=ring)
+                col, rotation = go_left(rotation=rotation, col=col, ring=ring)
         elif col == ring:
-            row, rotation = goUp(rotation=rotation, row=row, ring=ring)
+            row, rotation = go_up(rotation=rotation, row=row, ring=ring)
         elif col == cols_count - 1 - ring:
-            row, rotation = goDown(
+            row, rotation = go_down(
                 rotation=rotation, row=row, rows_count=rows_count, ring=ring
             )
         else:
@@ -107,8 +107,8 @@ def computeOldPosition(
     return row, col
 
 
-def matrixRotation(
-    matrix: list[int], rotation: int, output_sink: Callable[[str], None] = print
+def matrix_rotation(
+    matrix: list[list[int]], rotation: int, output_sink: Callable[[str], None] = print
 ):
     if matrix is None:
         raise ValueError("'matrix' cannot be None")
@@ -132,7 +132,7 @@ def matrixRotation(
         position `row`/`col`.
         """
 
-        old_row, old_col = computeOldPosition(
+        old_row, old_col = compute_old_position(
             rows_count=rows_count,
             cols_count=cols_count,
             rotation=rotation,
@@ -160,4 +160,4 @@ if __name__ == "__main__":
     for _ in range(m):
         matrix.append(list(map(int, input().rstrip().split())))
 
-    matrixRotation(matrix, r)
+    matrix_rotation(matrix, r)

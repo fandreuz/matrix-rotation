@@ -1,15 +1,15 @@
-from .rotation import matrixRotation, computeRingSize
+from .rotation import matrix_rotation, compute_ring_size
 import pytest
 
 # Most of these test cases come from https://www.hackerrank.com/challenges/matrix-rotation-algo/problem
 
 
 def test_compute_ring_size_one_cell_matrix():
-    assert computeRingSize(rows_count=1, cols_count=1, ring=0) == 1
+    assert compute_ring_size(rows_count=1, cols_count=1, ring=0) == 1
 
 
 def test_compute_ring_size_one_element_matrix():
-    assert computeRingSize(rows_count=1, cols_count=2, ring=0) == 2
+    assert compute_ring_size(rows_count=1, cols_count=2, ring=0) == 2
 
 
 def test_4_4_matrix():
@@ -18,7 +18,7 @@ def test_4_4_matrix():
 
     # When
     output = []
-    matrixRotation(matrix=matrix, rotation=2, output_sink=output.append)
+    matrix_rotation(matrix=matrix, rotation=2, output_sink=output.append)
 
     # Then
     assert output == ["3 4 8 12", "2 11 10 16", "1 7 6 15", "5 9 13 14"]
@@ -36,7 +36,7 @@ def test_5_4_matrix():
 
     # When
     output = []
-    matrixRotation(matrix=matrix, rotation=7, output_sink=output.append)
+    matrix_rotation(matrix=matrix, rotation=7, output_sink=output.append)
 
     # Then
     assert output == [
@@ -54,7 +54,7 @@ def test_zero_rotation():
 
     # When
     output = []
-    matrixRotation(matrix=matrix, rotation=0, output_sink=output.append)
+    matrix_rotation(matrix=matrix, rotation=0, output_sink=output.append)
 
     # Then
     matrix_str = [list(map(str, row)) for row in matrix]
@@ -63,17 +63,17 @@ def test_zero_rotation():
 
 def test_none_matrix():
     with pytest.raises(ValueError):
-        matrixRotation(matrix=None, rotation=10)
+        matrix_rotation(matrix=None, rotation=10)
 
 
 def test_none_rotation():
     with pytest.raises(ValueError):
-        matrixRotation(matrix=[[1]], rotation=None)
+        matrix_rotation(matrix=[[1]], rotation=None)
 
 
 def test_negative_rotation():
     with pytest.raises(ValueError):
-        matrixRotation(matrix=None, rotation=-1)
+        matrix_rotation(matrix=None, rotation=-1)
 
 
 def test_empty_matrix():
@@ -82,7 +82,7 @@ def test_empty_matrix():
 
     # When
     output = []
-    matrixRotation(matrix=matrix, rotation=5, output_sink=output.append)
+    matrix_rotation(matrix=matrix, rotation=5, output_sink=output.append)
 
     # Then
     assert not output
@@ -90,14 +90,14 @@ def test_empty_matrix():
 
 def test_one_element_matrix():
     with pytest.raises(ValueError):
-        matrixRotation(matrix=[[1]], rotation=2)
+        matrix_rotation(matrix=[[1]], rotation=2)
 
 
 def test_one_row_matrix():
     with pytest.raises(ValueError):
-        matrixRotation(matrix=[[1, 2]], rotation=2)
+        matrix_rotation(matrix=[[1, 2]], rotation=2)
 
 
 def test_one_col_matrix():
     with pytest.raises(ValueError):
-        matrixRotation(matrix=[[1], [2]], rotation=2)
+        matrix_rotation(matrix=[[1], [2]], rotation=2)
