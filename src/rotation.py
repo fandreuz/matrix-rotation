@@ -1,5 +1,7 @@
 #!/bin/python3
 
+from typing import Callable
+
 
 def computeRing(rows_count: int, cols_count: int, row: int, col: int) -> int:
     """
@@ -13,6 +15,10 @@ def computeRingSize(rows_count: int, cols_count: int, ring: int) -> int:
     """
     Compute the size of the given ring in terms of matrix cells.
     """
+    if rows_count == 1:
+        return cols_count
+    if cols_count == 1:
+        return rows_count
     return (rows_count - 2 * ring) * 2 + (cols_count - 2 * ring - 2) * 2
 
 
@@ -101,9 +107,13 @@ def computeOldPosition(
     return row, col
 
 
-def matrixRotation(matrix: list[int], rotation: int):
-    if not matrix:
-        return
+def matrixRotation(
+    matrix: list[int], rotation: int, output_sink: Callable[[str], None] = print
+):
+    if matrix is None:
+        raise ValueError("'matrix' cannot be None")
+    if rotation is None or rotation < 0:
+        raise ValueError(f"'rotation' cannot be {rotation}")
 
     rows_count = len(matrix)
     if not rows_count:
@@ -129,7 +139,7 @@ def matrixRotation(matrix: list[int], rotation: int):
         return matrix[old_row][old_col]
 
     for row in range(rows_count):
-        print(" ".join(str(get_new_value(row, col)) for col in range(cols_count)))
+        output_sink(" ".join(str(get_new_value(row, col)) for col in range(cols_count)))
 
 
 # Hackerrank-generated section
