@@ -123,6 +123,9 @@ def matrixRotation(
     if not cols_count:
         return
 
+    if min(rows_count, cols_count) % 2 != 0:
+        raise ValueError(f"Unexpected matrix size: {rows_count}x{cols_count}")
+
     def get_new_value(row: int, col: int) -> int:
         """
         Get a value from the new matrix (after anti-clockwise rotation) at the
