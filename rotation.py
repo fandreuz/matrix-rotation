@@ -132,6 +132,7 @@ def matrixRotation(matrix: list[int], rotation: int):
         print(" ".join(str(get_new_value(row, col)) for col in range(cols_count)))
 
 
+# Hackerrank-generated section
 if __name__ == "__main__":
     first_multiple_input = input().rstrip().split()
 
